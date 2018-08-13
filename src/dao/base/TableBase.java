@@ -5,47 +5,52 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public abstract class TableBase<T extends ColBase<?>> {
+public abstract class TableBase<S extends TableBase, T extends ColBase<?>> {
 
     public abstract String tableName();
 
     private List<String> selectCols = new ArrayList<String>(0);
 
     @SuppressWarnings("unchecked")
-    public TableBase<T> col(T col) {
+    public S col(T col) {
         return this.cols(col);
     }
 
     @SuppressWarnings("unchecked")
-    public TableBase<T> cols(T... cols) {
+    public S cols(T... cols) {
         for (T col : cols) {
             if (!selectCols.contains(col.name())) {
                 selectCols.add(col.name());
             }
         }
-        return this;
+        return (S) this;
     }
 
     private List<WhereKV> where = new ArrayList<WhereKV>(0);
 
-    public TableBase<T> where(ColBase<String> col, String value) {
-        this.where(col.name(), value);
-        return this;
+    final protected S clearWhere() {
+        where.clear();
+        return (S) this;
     }
 
-    public TableBase<T> where(ColBase<Long> col, Long value) {
+    public S where(ColBase<String> col, String value) {
         this.where(col.name(), value);
-        return this;
+        return (S) this;
     }
 
-    public TableBase<T> where(ColBase<Date> col, Date value) {
+    public S where(ColBase<Long> col, Long value) {
         this.where(col.name(), value);
-        return this;
+        return (S) this;
     }
 
-    public TableBase<T> where(ColBase<BigDecimal> col, BigDecimal value) {
+    public S where(ColBase<Date> col, Date value) {
         this.where(col.name(), value);
-        return this;
+        return (S) this;
+    }
+
+    public S where(ColBase<BigDecimal> col, BigDecimal value) {
+        this.where(col.name(), value);
+        return (S) this;
     }
 
     private void where(String col, Object value) {

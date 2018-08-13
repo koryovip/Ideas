@@ -2,7 +2,7 @@ package dao.def;
 
 import dao.base.TableBase;
 
-public class T_BOOK extends TableBase<T_BOOK_COL<?>> {
+public class T_BOOK extends TableBase<T_BOOK, T_BOOK_COL<?>> {
 
     @Override
     public String tableName() {
