@@ -13,18 +13,18 @@ public class Useage {
         T_USER tUser = new T_USER();
         tUser
                 //                                .where(T_USER_COL.ID) //
-                .col(T_USER_COL.ID) //
+                .cols(T_USER_COL.ID, T_USER_COL.PASS, T_USER_COL.REG_DT) //
                 .where(T_USER_COL.ID, "userid-0192") //
                 .where(T_USER_COL.REG_DT, 100L) //
                 .where(T_USER_COL.LAST_UPD, new Date()) //
-        //                .where(T_USER_COL.PASS, 0) //
+        //                        .where(T_USER_COL.PASS, 100L) //
         ;
         System.out.println(tUser.select());
         tUser.showParam();
 
         new T_BOOK() //
                 .where(T_BOOK_COL.ID, "") //
-        //                .where(T_USER_COL.ID, "") //
+        //                        .where(T_USER_COL.ID, "") //
         ;
 
     }

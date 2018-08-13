@@ -11,31 +11,39 @@ public abstract class TableBase<T extends ColBase<?>> {
 
     private List<String> selectCols = new ArrayList<String>(0);
 
+    @SuppressWarnings("unchecked")
     public TableBase<T> col(T col) {
-        if (!selectCols.contains(col.name())) {
-            selectCols.add(col.name());
+        return this.cols(col);
+    }
+
+    @SuppressWarnings("unchecked")
+    public TableBase<T> cols(T... cols) {
+        for (T col : cols) {
+            if (!selectCols.contains(col.name())) {
+                selectCols.add(col.name());
+            }
         }
         return this;
     }
 
     private List<WhereKV> where = new ArrayList<WhereKV>(0);
 
-    public TableBase<T> where(T col, String value) {
+    public TableBase<T> where(ColBase<String> col, String value) {
         this.where(col.name(), value);
         return this;
     }
 
-    public TableBase<T> where(T col, Long value) {
+    public TableBase<T> where(ColBase<Long> col, Long value) {
         this.where(col.name(), value);
         return this;
     }
 
-    public TableBase<T> where(T col, Date value) {
+    public TableBase<T> where(ColBase<Date> col, Date value) {
         this.where(col.name(), value);
         return this;
     }
 
-    public TableBase<T> where(T col, BigDecimal value) {
+    public TableBase<T> where(ColBase<BigDecimal> col, BigDecimal value) {
         this.where(col.name(), value);
         return this;
     }
@@ -52,7 +60,7 @@ public abstract class TableBase<T extends ColBase<?>> {
         StringBuilder sb = new StringBuilder("SELECT ");
         sb.append(selectCols.get(0));
         for (int ii = 1; ii < selectCols.size(); ii++) {
-            sb.append(",").append(selectCols.get(ii));
+            sb.append(", ").append(selectCols.get(ii));
         }
         sb.append(" FROM ").append(tableName()) //
                 .append(" where 1=1");
