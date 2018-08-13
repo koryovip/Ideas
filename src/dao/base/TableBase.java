@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public abstract class TableBase<S extends TableBase, T extends ColBase<?>> {
+public abstract class TableBase<S extends TableBase<?, ?>, T extends ColBase<?>> {
 
     public abstract String tableName();
 
