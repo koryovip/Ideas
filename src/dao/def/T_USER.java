@@ -15,10 +15,4 @@ public class T_USER extends TableBase<T_USER, T_USER_COL<?>> {
         return super.select();
     }
 
-    //    public <T> T_USER where(T_USER_COL<T> col, T value) {
-    //        // System.out.println(col.name() + "=" + value);
-    //        super.where(col.name(), value);
-    //        return this;
-    //    }
-
 }

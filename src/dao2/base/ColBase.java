@@ -1,17 +1,17 @@
-package dao.base;
+package dao2.base;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-public abstract class ColBase<T> {
+public abstract class ColBase<T extends TblBase<?>, V> {
 
-    private final String name;
+    final private String name;
 
     public ColBase(String name) {
         this.name = name;
     }
 
-    final public String name() {
+    public String name() {
         return this.name;
     }
 
@@ -25,6 +25,19 @@ public abstract class ColBase<T> {
         @SuppressWarnings("unchecked")
         Class<T> tClass = (Class<T>) actualTypeArguments[0];
         return tClass;
+    }
+
+    @Deprecated
+    public void col(T tbl) {
+        tbl.col(this, null);
+    }
+
+    public void set(T tbl, V val) {
+
+    }
+
+    public void where(T tbl, V val) {
+        tbl.where(this, val);
     }
 
 }

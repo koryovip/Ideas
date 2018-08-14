@@ -28,26 +28,31 @@ public abstract class TableBase<S extends TableBase<?, ?>, T extends ColBase<?>>
 
     private List<WhereKV> where = new ArrayList<WhereKV>(0);
 
+    @SuppressWarnings("unchecked")
     final protected S clearWhere() {
         where.clear();
         return (S) this;
     }
 
+    @SuppressWarnings("unchecked")
     public S where(ColBase<String> col, String value) {
         this.where(col.name(), value);
         return (S) this;
     }
 
+    @SuppressWarnings("unchecked")
     public S where(ColBase<Long> col, Long value) {
         this.where(col.name(), value);
         return (S) this;
     }
 
+    @SuppressWarnings("unchecked")
     public S where(ColBase<Date> col, Date value) {
         this.where(col.name(), value);
         return (S) this;
     }
 
+    @SuppressWarnings("unchecked")
     public S where(ColBase<BigDecimal> col, BigDecimal value) {
         this.where(col.name(), value);
         return (S) this;

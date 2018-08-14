@@ -1,21 +1,11 @@
-package dao.base;
+package test;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-public abstract class ColBase<T> {
+abstract class Foo<T> {
 
-    private final String name;
-
-    public ColBase(String name) {
-        this.name = name;
-    }
-
-    final public String name() {
-        return this.name;
-    }
-
-    public Class<T> getType() {
+    public Class<T> getTClass() {
         ParameterizedType genericSuperclass = (ParameterizedType) getClass().getGenericSuperclass();
         Type[] actualTypeArguments = genericSuperclass.getActualTypeArguments();
         for (Type type : actualTypeArguments) {

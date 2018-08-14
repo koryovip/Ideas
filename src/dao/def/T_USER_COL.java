@@ -6,21 +6,18 @@ import dao.base.ColBase;
 
 public class T_USER_COL<T> extends ColBase<T> {
 
-    private final String name;
-
     public T_USER_COL(String name) {
-        this.name = name;
+        super(name);
     }
 
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    public static final T_USER_COL<String> ID = new T_USER_COL<String>("ID");
-    public static final T_USER_COL<String> PASS = new T_USER_COL<String>("PASS");
-    public static final T_USER_COL<Long> REG_DT = new T_USER_COL<Long>("REG_DT");
-    public static final T_USER_COL<Date> LAST_UPD = new T_USER_COL<Date>("LAST_UPD");
+    public static final T_USER_COL<String> ID = new T_USER_COL<String>("ID") {
+    };
+    public static final T_USER_COL<String> PASS = new T_USER_COL<String>("PASS") {
+    };
+    public static final T_USER_COL<Long> REG_DT = new T_USER_COL<Long>("REG_DT") {
+    };
+    public static final T_USER_COL<Date> LAST_UPD = new T_USER_COL<Date>("LAST_UPD") {
+    };
 
     //    @Override
     //    public T_USER_COL<T> eq(T value) {
