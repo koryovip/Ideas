@@ -3,7 +3,7 @@ package dao2.base;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-public abstract class ColBase<T extends TblBase, V> {
+public abstract class ColBase<T extends TblBase<?>, V> {
 
     final private String name;
 
@@ -27,6 +27,7 @@ public abstract class ColBase<T extends TblBase, V> {
         return tClass;
     }
 
+    @Deprecated
     public void col(T tbl) {
         tbl.col(this, null);
     }

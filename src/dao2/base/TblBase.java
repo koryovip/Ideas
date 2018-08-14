@@ -3,7 +3,7 @@ package dao2.base;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class TblBase {
+public abstract class TblBase<C> {
 
     private final String name;
 
@@ -15,8 +15,10 @@ public abstract class TblBase {
         return this.name;
     }
 
+    @Deprecated
     private List<String> selectColumnList = new ArrayList<String>();
 
+    @Deprecated
     protected <T> T col(ColBase<?, ?> col, T val) {
         selectColumnList.add(col.name());
         return null;
@@ -32,8 +34,9 @@ public abstract class TblBase {
         return null;
     }
 
-    public final String select(ColBase<?, ?>... col) {
+    public final String select(C col1, C... col2) {
         StringBuilder sb = new StringBuilder("SELECT ");
+        /*
         if (selectColumnList.size() <= 0) {
             sb.append("*");
         } else {
@@ -41,6 +44,10 @@ public abstract class TblBase {
             for (int ii = 1; ii < selectColumnList.size(); ii++) {
                 sb.append(", ").append(selectColumnList.get(ii));
             }
+        }*/
+        sb.append(((ColBase<?, ?>) col1).name());
+        for (C c : col2) {
+            sb.append(", ").append(((ColBase<?, ?>) c).name());
         }
         sb.append(" FROM ") //
                 .append(this.name) //
