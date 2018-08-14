@@ -82,6 +82,20 @@ public abstract class TblBase<C> {
         return sb.toString();
     }
 
+    abstract public List<C> columnAll();
+
+    public final String selectAllColumns() {
+        StringBuilder sb = new StringBuilder("SELECT ");
+        List<C> cols = columnAll();
+        sb.append(((ColBase<?, ?>) cols.get(0)).name());
+        for (int ii = 1; ii < cols.size(); ii++) {
+            sb.append(", ").append(((ColBase<?, ?>) cols.get(ii)).name());
+        }
+        sb.append(" FROM ").append(this.name);
+        this.whereStr(sb);
+        return sb.toString();
+    }
+
     public final String insert() {
         StringBuilder sb = new StringBuilder("INSERT INTO ");
         sb.append(this.name);
