@@ -32,8 +32,13 @@ public abstract class ColBase<T extends TblBase<?>, V> {
         tbl.col(this, null);
     }
 
-    public void set(T tbl, V val) {
-
+    /**
+     * わざとwhereとパラメータの順番と違う。
+     * @param val
+     * @param tbl
+     */
+    public void set(V val, T tbl) {
+        tbl.set(this, val);
     }
 
     public void where(T tbl, V val) {
