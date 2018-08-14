@@ -55,9 +55,10 @@ public class DB {
         }
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
-            System.out.println(rs.getString(1));
-            System.out.println(rs.getString(2));
-            System.out.println(rs.getString(3));
+            int colCount = rs.getMetaData().getColumnCount();
+            for (int ii = 1; ii <= colCount; ii++) {
+                System.out.println(rs.getString(ii));
+            }
         }
         rs.close();
         ps.close();

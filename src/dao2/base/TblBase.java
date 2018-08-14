@@ -15,90 +15,82 @@ public abstract class TblBase<C> {
         return this.name;
     }
 
-    @Deprecated
-    private List<String> selectColumnList = new ArrayList<String>();
-
-    @Deprecated
-    protected <T> T col(ColBase<?, ?> col, T val) {
-        selectColumnList.add(col.name());
-        return null;
-    }
-
-    final private List<String> setCol = new ArrayList<String>();
-    final private List<Object> setVal = new ArrayList<Object>();
+    final private List<String> setCols = new ArrayList<String>();
+    final private List<Object> setVals = new ArrayList<Object>();
 
     protected <T> T set(ColBase<?, ?> col, T val) {
-        setCol.add(col.name());
-        setVal.add(val);
+        setCols.add(col.name());
+        setVals.add(val);
         return null;
     }
 
-    private List<String> whereList = new ArrayList<String>();
-    private List<Object> whereValList = new ArrayList<Object>();
+    private List<String> whereCols = new ArrayList<String>();
+    private List<Object> whereVals = new ArrayList<Object>();
 
     protected <T> T where(ColBase<?, ?> col, T val) {
-        whereList.add(col.name() + " = ?");
-        whereValList.add(val);
+        whereCols.add(col.name());
+        whereVals.add(val);
         return null;
-    }
-
-    public final String select(C col1, C... col2) {
-        StringBuilder sb = new StringBuilder("SELECT ");
-        /*
-        if (selectColumnList.size() <= 0) {
-            sb.append("*");
-        } else {
-            sb.append(selectColumnList.get(0));
-            for (int ii = 1; ii < selectColumnList.size(); ii++) {
-                sb.append(", ").append(selectColumnList.get(ii));
-            }
-        }*/
-        sb.append(((ColBase<?, ?>) col1).name());
-        for (C c : col2) {
-            sb.append(", ").append(((ColBase<?, ?>) c).name());
-        }
-        sb.append(" FROM ") //
-                .append(this.name) //
-                .append(" WHERE 1=1");
-        for (String where : whereList) {
-            sb.append(" AND ").append(where);
-        }
-        return sb.toString();
     }
 
     public List<Object> getParams1() {
-        return this.setVal;
+        return this.setVals;
     }
 
     public List<Object> getParams2() {
-        return this.whereValList;
+        return this.whereVals;
     }
 
     public List<Object> getParams3() {
         List<Object> result = new ArrayList<Object>();
-        result.addAll(this.setVal);
-        result.addAll(this.whereValList);
+        result.addAll(this.setVals);
+        result.addAll(this.whereVals);
         return result;
     }
 
     public void showParam() {
-        for (Object obj : setVal) {
+        for (Object obj : setVals) {
             System.out.println(obj);
         }
-        for (Object obj : whereValList) {
+        for (Object obj : whereVals) {
             System.out.println(obj);
         }
+    }
+
+    public final String selectCount() {
+        return select("SELECT COUNT(*", ") FROM ", false, null);
+    }
+
+    public final String selectCount(C col1) {
+        return select("SELECT COUNT(", ") FROM ", true, col1);
+    }
+
+    public final String select(C col1, C... col2) {
+        return select("SELECT ", " FROM ", true, col1, col2);
+    }
+
+    private final String select(final String SELECT, final String FROM, final boolean all, final C col1, final C... col2) {
+        StringBuilder sb = new StringBuilder(SELECT);
+        if (all) {
+            sb.append(((ColBase<?, ?>) col1).name());
+            for (C c : col2) {
+                sb.append(", ").append(((ColBase<?, ?>) c).name());
+            }
+        }
+        sb.append(FROM).append(this.name);
+        this.whereStr(sb);
+        return sb.toString();
     }
 
     public final String insert() {
         StringBuilder sb = new StringBuilder("INSERT INTO ");
         sb.append(this.name);
-        sb.append(" (").append(setCol.get(0));
-        for (int ii = 1; ii < setCol.size(); ii++) {
-            sb.append(", ").append(setCol.get(ii));
+        sb.append(" (").append(setCols.get(0));
+        for (int ii = 1; ii < setCols.size(); ii++) {
+            sb.append(", ").append(setCols.get(ii));
         }
         sb.append(") VALUES (?");
-        for (int ii = 1; ii < setCol.size(); ii++) {
+        for (int ii = 1; ii < setCols.size(); ii++) {
             sb.append(", ?");
         }
         sb.append(")");
@@ -108,27 +100,25 @@ public abstract class TblBase<C> {
     public final String update() {
         StringBuilder sb = new StringBuilder("UPDATE ");
         sb.append(this.name).append(" SET ");
-        sb.append(setCol.get(0)).append("= ?");
-        for (int ii = 1; ii < setCol.size(); ii++) {
-            sb.append(", ").append(setCol.get(ii)).append(" = ?");
+        sb.append(setCols.get(0)).append("= ?");
+        for (int ii = 1; ii < setCols.size(); ii++) {
+            sb.append(", ").append(setCols.get(ii)).append(" = ?");
         }
-        sb.append(" WHERE 1=1");
-        for (String where : whereList) {
-            sb.append(" AND ");
-            sb.append(where);
-        }
+        this.whereStr(sb);
         return sb.toString();
     }
 
     public final String delete() {
         StringBuilder sb = new StringBuilder("DELETE FROM ");
         sb.append(this.name);
-        sb.append(" WHERE 1=1");
-        for (String where : whereList) {
-            sb.append(" AND ");
-            sb.append(where);
-        }
+        this.whereStr(sb);
         return sb.toString();
     }
 
+    private void whereStr(StringBuilder sb) {
+        sb.append(" WHERE 1=1");
+        for (String where : whereCols) {
+            sb.append(" AND ").append(where).append(" = ?");
+        }
+    }
 }

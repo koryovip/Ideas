@@ -27,14 +27,27 @@ public class Useage2 {
             int insertCount = DB.insert(conn, user);
             System.out.println(insertCount);
         }
+        {
+            T_USER user = new T_USER();
+            T_USER_COL.USER_ID.set("user-002", user);
+            T_USER_COL.SCORE.set(BigDecimal.TEN, user);
+            T_USER_COL.REG_DT.set(cal.getTime(), user);
+            int insertCount = DB.insert(conn, user);
+            System.out.println(insertCount);
+        }
         System.out.println("------------------------------------------------------------------------");
         {
             T_USER user = new T_USER();
             T_USER_COL.USER_ID.where(user, "user-001");
             T_USER_COL.SCORE.where(user, BigDecimal.TEN);
-            // T_USER_COL.SCORE.where(uesr, new Date()); // 型の不一致コンパイルエラー
-            // M_COMPANY_COL.COMPANY_ID.where(uesr, ""); // tbl
             DB.select(conn, user.select(T_USER_COL.USER_ID, T_USER_COL.REG_DT, T_USER_COL.SCORE), user.getParams2());
+        }
+        System.out.println("------------------------------------------------------------------------");
+        {
+            T_USER user = new T_USER();
+            // T_USER_COL.USER_ID.where(user, "user-001");
+            T_USER_COL.SCORE.where(user, BigDecimal.TEN);
+            DB.select(conn, user.selectCount(T_USER_COL.USER_ID), user.getParams2());
         }
         System.out.println("------------------------------------------------------------------------");
         {

@@ -27,11 +27,6 @@ public abstract class ColBase<T extends TblBase<?>, V> {
         return tClass;
     }
 
-    @Deprecated
-    public void col(T tbl) {
-        tbl.col(this, null);
-    }
-
     /**
      * わざとwhereとパラメータの順番と違う。
      * @param val
