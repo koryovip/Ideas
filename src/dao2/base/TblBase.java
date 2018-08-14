@@ -65,10 +65,12 @@ public abstract class TblBase<C> {
         return select("SELECT COUNT(", ") FROM ", true, col1);
     }
 
+    @SafeVarargs
     public final String select(C col1, C... col2) {
         return select("SELECT ", " FROM ", true, col1, col2);
     }
 
+    @SafeVarargs
     private final String select(final String SELECT, final String FROM, final boolean all, final C col1, final C... col2) {
         StringBuilder sb = new StringBuilder(SELECT);
         if (all) {
