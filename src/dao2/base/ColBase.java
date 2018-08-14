@@ -15,16 +15,14 @@ public abstract class ColBase<T extends TblBase<?>, V> {
         return this.name;
     }
 
+    @SuppressWarnings("unchecked")
     public Class<T> getType() {
         ParameterizedType genericSuperclass = (ParameterizedType) getClass().getGenericSuperclass();
         Type[] actualTypeArguments = genericSuperclass.getActualTypeArguments();
-        for (Type type : actualTypeArguments) {
+        /*for (Type type : actualTypeArguments) {
             type.getTypeName();
-            System.out.println(type);
-        }
-        @SuppressWarnings("unchecked")
-        Class<T> tClass = (Class<T>) actualTypeArguments[0];
-        return tClass;
+        }*/
+        return (Class<T>) actualTypeArguments[0];
     }
 
     /**
