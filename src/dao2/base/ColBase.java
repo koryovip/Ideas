@@ -27,6 +27,14 @@ public abstract class ColBase<T extends TblBase, V> {
         return tClass;
     }
 
+    public void col(T tbl) {
+        tbl.col(this, null);
+    }
+
+    public void set(T tbl, V val) {
+
+    }
+
     public void where(T tbl, V val) {
         tbl.where(this, val);
     }
