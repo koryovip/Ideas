@@ -24,10 +24,8 @@ public class Useage2 {
             T_USER_COL.USER_ID.set("user-001", user);
             T_USER_COL.SCORE.set(BigDecimal.TEN, user);
             T_USER_COL.REG_DT.set(cal.getTime(), user);
-            final String insertSql = user.insert();
-            System.out.println(insertSql);
-            int updateCount = DB.update(conn, insertSql, user.getParams1());
-            System.out.println(updateCount);
+            int insertCount = DB.insert(conn, user);
+            System.out.println(insertCount);
         }
         System.out.println("------------------------------------------------------------------------");
         {
@@ -36,9 +34,7 @@ public class Useage2 {
             T_USER_COL.SCORE.where(user, BigDecimal.TEN);
             // T_USER_COL.SCORE.where(uesr, new Date()); // 型の不一致コンパイルエラー
             // M_COMPANY_COL.COMPANY_ID.where(uesr, ""); // tbl
-            final String selectSql = user.select(T_USER_COL.USER_ID, T_USER_COL.REG_DT, T_USER_COL.SCORE);
-            System.out.println(selectSql);
-            DB.query(conn, selectSql, user.getParams2());
+            DB.select(conn, user.select(T_USER_COL.USER_ID, T_USER_COL.REG_DT, T_USER_COL.SCORE), user.getParams2());
         }
         System.out.println("------------------------------------------------------------------------");
         {
@@ -46,28 +42,23 @@ public class Useage2 {
             T_USER_COL.SCORE.set(BigDecimal.ZERO, user);
             T_USER_COL.REG_DT.set(new Date(), user);
             T_USER_COL.USER_ID.where(user, "user-001");
-            final String updateSql = user.update();
-            System.out.println(updateSql);
-            // user.showParam();
-            DB.update(conn, updateSql, user.getParams3());
+            int updateCount = DB.update(conn, user);
+            System.out.println(updateCount);
         }
         System.out.println("------------------------------------------------------------------------");
         {
             T_USER user = new T_USER();
             T_USER_COL.USER_ID.where(user, "user-001");
             // T_USER_COL.SCORE.where(user, BigDecimal.TEN);
-            final String selectSql = user.select(T_USER_COL.USER_ID, T_USER_COL.REG_DT, T_USER_COL.SCORE);
-            System.out.println(selectSql);
-            DB.query(conn, selectSql, user.getParams2());
+            DB.select(conn, user.select(T_USER_COL.USER_ID, T_USER_COL.REG_DT, T_USER_COL.SCORE), user.getParams2());
         }
         System.out.println("------------------------------------------------------------------------");
         {
             T_USER user = new T_USER();
-            T_USER_COL.USER_ID.where(user, "user001");
-            T_USER_COL.REG_DT.where(user, new Date());
-            final String deleteSql = user.delete();
-            System.out.println(deleteSql);
-            DB.update(conn, deleteSql, user.getParams2());
+            T_USER_COL.USER_ID.where(user, "user-001");
+            // T_USER_COL.REG_DT.where(user, new Date());
+            int deleteCount = DB.delete(conn, user);
+            System.out.println(deleteCount);
         }
         System.out.println("------------------------------------------------------------------------");
         {
