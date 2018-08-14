@@ -45,7 +45,9 @@ public class Useage2 {
         {
             T_USER user = new T_USER();
             // USER_ID.where(user, "user-001");
-            // SCORE.where(user, BigDecimal.TEN);
+            SCORE.whereDesc(user, BigDecimal.TEN);
+            USER_ID.desc(user);
+            SCORE.asc(user);
             DB.select(conn, user.selectAllColumns(), user.getParams2());
         }
         System.out.println("------------------------------------------------------------------------");

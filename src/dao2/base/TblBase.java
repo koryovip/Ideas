@@ -33,6 +33,15 @@ public abstract class TblBase<C> {
         return null;
     }
 
+    private List<String> orderCols = new ArrayList<String>();
+    private List<String> orderDict = new ArrayList<String>(); // ソート方向。asc or desc
+
+    protected <T> T orderBy(ColBase<?, ?> col, T val, String order) {
+        orderCols.add(col.name());
+        orderDict.add(order);
+        return null;
+    }
+
     public List<Object> getParams1() {
         return this.setVals;
     }
@@ -80,7 +89,7 @@ public abstract class TblBase<C> {
             }
         }
         sb.append(FROM).append(this.name);
-        this.whereStr(sb);
+        this.whereSql(sb);
         return sb.toString();
     }
 
@@ -94,7 +103,8 @@ public abstract class TblBase<C> {
             sb.append(", ").append(((ColBase<?, ?>) cols.get(ii)).name());
         }
         sb.append(" FROM ").append(this.name);
-        this.whereStr(sb);
+        this.whereSql(sb);
+        this.orderBySql(sb);
         return sb.toString();
     }
 
@@ -120,21 +130,32 @@ public abstract class TblBase<C> {
         for (int ii = 1; ii < setCols.size(); ii++) {
             sb.append(", ").append(setCols.get(ii)).append(" = ?");
         }
-        this.whereStr(sb);
+        this.whereSql(sb);
         return sb.toString();
     }
 
     public final String delete() {
         StringBuilder sb = new StringBuilder("DELETE FROM ");
         sb.append(this.name);
-        this.whereStr(sb);
+        this.whereSql(sb);
         return sb.toString();
     }
 
-    private void whereStr(StringBuilder sb) {
+    private void whereSql(StringBuilder sb) {
         sb.append(" WHERE 1=1");
         for (String where : whereCols) {
             sb.append(" AND ").append(where).append(" = ?");
+        }
+    }
+
+    private void orderBySql(StringBuilder sb) {
+        if (orderCols.size() <= 0) {
+            return;
+        }
+        sb.append(" ORDER BY ");
+        sb.append(orderCols.get(0)).append(" ").append(orderDict.get(0));
+        for (int ii = 1; ii < orderCols.size(); ii++) {
+            sb.append(", ").append(orderCols.get(ii)).append(" ").append(orderDict.get(ii));
         }
     }
 }

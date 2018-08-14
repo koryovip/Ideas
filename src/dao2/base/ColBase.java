@@ -40,4 +40,22 @@ public abstract class ColBase<T extends TblBase<?>, V> {
         tbl.where(this, val);
     }
 
+    public void whereAsc(T tbl, V val) {
+        this.where(tbl, val);
+        this.asc(tbl);
+    }
+
+    public void whereDesc(T tbl, V val) {
+        this.where(tbl, val);
+        this.desc(tbl);
+    }
+
+    public void asc(T tbl) {
+        tbl.orderBy(this, null, SqlOrder.ASC.value());
+    }
+
+    public void desc(T tbl) {
+        tbl.orderBy(this, null, SqlOrder.DESC.value());
+    }
+
 }
