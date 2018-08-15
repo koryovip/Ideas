@@ -18,6 +18,7 @@ public enum SqlWhereCondition {
     , $10(">") //
     , $0eq1("<=") //
     , $1eq0(">=") //
+    , in("IN") //
     ;
 
     final private String value;

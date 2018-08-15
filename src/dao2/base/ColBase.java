@@ -96,6 +96,10 @@ public abstract class ColBase<T extends TblBase<?>, V> {
         this.desc(tbl);
     }
 
+    public void whereIn(T tbl, V val1, @SuppressWarnings("unchecked") V... vals) {
+        tbl.whereIn(this, val1, vals);
+    }
+
     public void asc(T tbl) {
         tbl.orderBy(this, null, SqlOrder.ASC);
     }

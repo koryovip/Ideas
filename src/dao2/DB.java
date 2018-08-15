@@ -20,14 +20,14 @@ public class DB {
     }
 
     public static final int update(Connection conn, TblBase<?> tbl) throws SQLException {
-        return change(conn, tbl.update(), tbl.getParams3());
+        return change(conn, tbl.update(), tbl.getParams3().toArray());
     }
 
     public static final int delete(Connection conn, TblBase<?> tbl) throws SQLException {
-        return change(conn, tbl.delete(), tbl.getParams2());
+        return change(conn, tbl.delete(), tbl.getParams2().toArray());
     }
 
-    private static final int change(Connection conn, String sql, List<Object> params) throws SQLException {
+    private static final int change(Connection conn, String sql, Object[] params) throws SQLException {
         System.out.println("■ " + sql);
         // Connection conn = getConn();
         PreparedStatement ps = conn.prepareStatement(sql);

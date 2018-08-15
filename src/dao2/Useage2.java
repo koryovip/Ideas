@@ -50,6 +50,8 @@ public class Useage2 {
             SCORE.whereDesc(user, 10);
             SCORE.where$01(user, 101);
             SCORE.where$10(user, 102);
+            USER_ID.whereIn(user, "1");
+            SCORE.whereIn(user, 1, 2, 3);
             SCORE.where$AB(user, 103);
             SCORE.where$0eq1(user, 104);
             SCORE.where$1eq0(user, 105);

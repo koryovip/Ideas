@@ -1,7 +1,10 @@
 package dao2.base;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import dao2.base.enumerated.SqlOrder;
 import dao2.base.enumerated.SqlWhereCondition;
@@ -18,12 +21,11 @@ public abstract class TblBase<C> {
         return this.name;
     }
 
-    final private List<String> setCols = new ArrayList<String>();
-    final private List<Object> setVals = new ArrayList<Object>();
+    // final private Map<String, String> setCols = new LinkedHashMap<String, String>();
+    final private Map<String, Object> setKV = new LinkedHashMap<String, Object>();
 
     protected <T> T set(ColBase<?, ?> col, T val) {
-        setCols.add(col.name());
-        setVals.add(val);
+        setKV.put(col.name(), val);
         return null;
     }
 
@@ -38,6 +40,31 @@ public abstract class TblBase<C> {
         return null;
     }
 
+    protected <T> T whereIn(ColBase<?, ?> col, T val, @SuppressWarnings("unchecked") T... vals) {
+        whereCond.add(SqlWhereCondition.in);
+        whereCols.add(col.name() + " IN " + buildInStr(new StringBuilder(), vals.length + 1));
+        whereVals.add(val);
+        for (T v : vals) {
+            whereVals.add(v);
+        }
+        return null;
+    }
+
+    /**
+     * (?,?,?,?)みたいな文字列を作る。<br>
+     * size > 0を保証して下さい。
+     * @param size
+     * @return
+     */
+    private String buildInStr(StringBuilder sb, int size) {
+        sb.append("(?");
+        for (int ii = 1; ii < size; ii++) {
+            sb.append(", ?");
+        }
+        sb.append(")");
+        return sb.toString();
+    }
+
     private List<String> orderCols = new ArrayList<String>();
     private List<SqlOrder> orderDire = new ArrayList<SqlOrder>(); // ソート方向。asc or desc
 
@@ -47,8 +74,8 @@ public abstract class TblBase<C> {
         return null;
     }
 
-    public List<Object> getParams1() {
-        return this.setVals;
+    public Object[] getParams1() {
+        return this.setKV.values().toArray();
     }
 
     public List<Object> getParams2() {
@@ -57,13 +84,13 @@ public abstract class TblBase<C> {
 
     public List<Object> getParams3() {
         List<Object> result = new ArrayList<Object>();
-        result.addAll(this.setVals);
+        result.addAll(this.setKV.values());
         result.addAll(this.whereVals);
         return result;
     }
 
     public void showParam() {
-        for (Object obj : setVals) {
+        for (Object obj : setKV.values()) {
             System.out.println(obj);
         }
         for (Object obj : whereVals) {
@@ -114,34 +141,33 @@ public abstract class TblBase<C> {
     }
 
     public final String insert() {
-        StringBuilder sb = new StringBuilder("INSERT INTO ");
-        sb.append(this.name);
-        sb.append(" (").append(setCols.get(0));
-        for (int ii = 1; ii < setCols.size(); ii++) {
-            sb.append(", ").append(setCols.get(ii));
+        StringBuilder sb = new StringBuilder("INSERT INTO ").append(this.name);
+        this.buildKVStr(sb, this.setKV, " (", ", ", ")");
+        sb.append(" VALUES ");
+        this.buildInStr(sb, setKV.size());
+        return sb.toString();
+    }
+
+    private String buildKVStr(StringBuilder sb, Map<String, Object> kv, String prefix, String mid, String suffix) {
+        // StringBuilder sb = new StringBuilder(prefix);
+        sb.append(prefix);
+        int index = 0;
+        for (Entry<String, Object> entry : kv.entrySet()) {
+            sb.append(index++ > 0 ? mid : "").append(entry.getKey());
         }
-        sb.append(") VALUES (?");
-        for (int ii = 1; ii < setCols.size(); ii++) {
-            sb.append(", ?");
-        }
-        sb.append(")");
+        sb.append(suffix);
         return sb.toString();
     }
 
     public final String update() {
-        StringBuilder sb = new StringBuilder("UPDATE ");
-        sb.append(this.name).append(" SET ");
-        sb.append(setCols.get(0)).append("= ?");
-        for (int ii = 1; ii < setCols.size(); ii++) {
-            sb.append(", ").append(setCols.get(ii)).append(" = ?");
-        }
+        StringBuilder sb = new StringBuilder("UPDATE ").append(this.name).append(" SET ");
+        this.buildKVStr(sb, this.setKV, "", " = ?, ", " = ?");
         this.whereSql(sb);
         return sb.toString();
     }
 
     public final String delete() {
-        StringBuilder sb = new StringBuilder("DELETE FROM ");
-        sb.append(this.name);
+        StringBuilder sb = new StringBuilder("DELETE FROM ").append(this.name);
         this.whereSql(sb);
         return sb.toString();
     }
@@ -149,8 +175,14 @@ public abstract class TblBase<C> {
     private void whereSql(StringBuilder sb) {
         sb.append(" WHERE 1=1");
         int index = 0;
-        for (String where : whereCols) {
-            sb.append(" AND ").append(where).append(" ").append(whereCond.get(index++).value()).append(" ?");
+        for (String whereCol : whereCols) {
+            sb.append(" AND ").append(whereCol);
+            final SqlWhereCondition condition = whereCond.get(index++);
+            if (condition != SqlWhereCondition.in) {
+                sb.append(" ").append(condition.value()).append(" ?");
+            } else {
+
+            }
         }
     }
 
