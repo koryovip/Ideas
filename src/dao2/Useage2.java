@@ -55,7 +55,7 @@ public class Useage2 {
             SCORE.where$1eq0(user, 105);
             USER_ID.desc(user);
             SCORE.asc(user);
-            List<T_USER_DTO> list = DB.select(T_USER_DTO.class, conn, user.getAllColumns(), user);
+            List<T_USER_DTO> list = DB.select(T_USER_DTO.class, conn, user.selectColumnAll(), user);
             for (T_USER_DTO ntt : list) {
                 System.out.println(ntt);
             }
