@@ -19,6 +19,7 @@ public enum SqlWhereCondition {
     , $0eq1("<=") //
     , $1eq0(">=") //
     , in("IN") //
+    , like("LIKE") //
     ;
 
     final private String value;

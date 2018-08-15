@@ -51,6 +51,8 @@ public class Useage2 {
             DB.insert(conn, user);
             USER_ID.set("user-006", user);
             DB.insert(conn, user);
+            USER_ID.set("user-100", user);
+            DB.insert(conn, user);
         }
         System.out.println("------------------------------------------------------------------------");
         {
@@ -78,7 +80,7 @@ public class Useage2 {
         System.out.println("------------------------------------------------------------------------");
         {
             T_USER user = T_USER.$();
-            // USER_ID.where(user, "user-001");
+            USER_ID.whereLike(user, "user-00%");
             SCORE.where(user, 10);
             long count = DB.count(conn, user.selectCount(USER_ID), user);
             System.out.println(count);

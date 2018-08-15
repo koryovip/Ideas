@@ -96,8 +96,25 @@ public abstract class ColBase<T extends TblBase<?>, V> {
         this.desc(tbl);
     }
 
+    /**
+     * select * from table where col1 in (?,?,?)<br>
+     * @param tbl
+     * @param val1
+     * @param vals
+     */
     public void whereIn(T tbl, V val1, @SuppressWarnings("unchecked") V... vals) {
         tbl.whereIn(this, val1, vals);
+    }
+
+    /**
+     * select * from table where col1 like ?<br>
+     * select * from table where col1 like 'abc%'<br>
+     * select * from table where col1 like '%123%'<br>
+     * @param tbl
+     * @param val
+     */
+    public void whereLike(T tbl, V val) {
+        tbl.where(this, val, SqlWhereCondition.like);
     }
 
     public void asc(T tbl) {
