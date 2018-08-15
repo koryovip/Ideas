@@ -3,6 +3,9 @@ package dao2.base;
 import java.util.ArrayList;
 import java.util.List;
 
+import dao2.base.enumerated.SqlOrder;
+import dao2.base.enumerated.SqlWhereCondition;
+
 public abstract class TblBase<C> {
 
     private final String name;
@@ -25,20 +28,22 @@ public abstract class TblBase<C> {
     }
 
     private List<String> whereCols = new ArrayList<String>();
+    private List<SqlWhereCondition> whereCond = new ArrayList<SqlWhereCondition>(); // 条件：=,<>,>=,<=
     private List<Object> whereVals = new ArrayList<Object>();
 
-    protected <T> T where(ColBase<?, ?> col, T val) {
+    protected <T> T where(ColBase<?, ?> col, T val, SqlWhereCondition cond) {
         whereCols.add(col.name());
+        whereCond.add(cond);
         whereVals.add(val);
         return null;
     }
 
     private List<String> orderCols = new ArrayList<String>();
-    private List<String> orderDict = new ArrayList<String>(); // ソート方向。asc or desc
+    private List<SqlOrder> orderDire = new ArrayList<SqlOrder>(); // ソート方向。asc or desc
 
-    protected <T> T orderBy(ColBase<?, ?> col, T val, String order) {
+    protected <T> T orderBy(ColBase<?, ?> col, T val, SqlOrder order) {
         orderCols.add(col.name());
-        orderDict.add(order);
+        orderDire.add(order);
         return null;
     }
 
@@ -143,8 +148,9 @@ public abstract class TblBase<C> {
 
     private void whereSql(StringBuilder sb) {
         sb.append(" WHERE 1=1");
+        int index = 0;
         for (String where : whereCols) {
-            sb.append(" AND ").append(where).append(" = ?");
+            sb.append(" AND ").append(where).append(" ").append(whereCond.get(index++).value()).append(" ?");
         }
     }
 
@@ -153,9 +159,9 @@ public abstract class TblBase<C> {
             return;
         }
         sb.append(" ORDER BY ");
-        sb.append(orderCols.get(0)).append(" ").append(orderDict.get(0));
+        sb.append(orderCols.get(0)).append(" ").append(orderDire.get(0).value());
         for (int ii = 1; ii < orderCols.size(); ii++) {
-            sb.append(", ").append(orderCols.get(ii)).append(" ").append(orderDict.get(ii));
+            sb.append(", ").append(orderCols.get(ii)).append(" ").append(orderDire.get(ii).value());
         }
     }
 }

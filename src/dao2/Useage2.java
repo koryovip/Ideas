@@ -1,7 +1,10 @@
 package dao2;
 
-import static dao2.def.M_COMPANY_COL.*;
-import static dao2.def.T_USER_COL.*;
+import static dao2.def.M_COMPANY_COL.COMPANY_ID;
+import static dao2.def.M_COMPANY_COL.COMPANY_XXXX;
+import static dao2.def.T_USER_COL.REG_DT;
+import static dao2.def.T_USER_COL.SCORE;
+import static dao2.def.T_USER_COL.USER_ID;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -45,6 +48,11 @@ public class Useage2 {
             T_USER user = new T_USER();
             // USER_ID.where(user, "user-001");
             SCORE.whereDesc(user, 10);
+            SCORE.where$01(user, 101);
+            SCORE.where$10(user, 102);
+            SCORE.where$AB(user, 103);
+            SCORE.where$0eq1(user, 104);
+            SCORE.where$1eq0(user, 105);
             USER_ID.desc(user);
             SCORE.asc(user);
             List<T_USER_DTO> list = DB.select(T_USER_DTO.class, conn, user.selectAllColumns(), user.getParams2());

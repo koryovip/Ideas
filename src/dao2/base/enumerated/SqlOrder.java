@@ -1,4 +1,4 @@
-package dao2.base;
+package dao2.base.enumerated;
 
 public enum SqlOrder {
 
