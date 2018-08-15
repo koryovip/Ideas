@@ -42,6 +42,15 @@ public class Useage2 {
             REG_DT.set(cal.getTime(), user);
             int insertCount = DB.insert(conn, user);
             System.out.println(insertCount);
+
+            USER_ID.set("user-003", user);
+            DB.insert(conn, user);
+            USER_ID.set("user-004", user);
+            DB.insert(conn, user);
+            USER_ID.set("user-005", user);
+            DB.insert(conn, user);
+            USER_ID.set("user-006", user);
+            DB.insert(conn, user);
         }
         System.out.println("------------------------------------------------------------------------");
         {
@@ -71,7 +80,8 @@ public class Useage2 {
             T_USER user = T_USER.$();
             // USER_ID.where(user, "user-001");
             SCORE.where(user, 10);
-            DB.select(T_USER_DTO.class, conn, user.selectCount(USER_ID), user);
+            long count = DB.count(conn, user.selectCount(USER_ID), user);
+            System.out.println(count);
         }
         System.out.println("------------------------------------------------------------------------");
         {

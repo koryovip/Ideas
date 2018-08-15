@@ -45,6 +45,38 @@ public class DB {
         return updateCount;
     }
 
+    /**
+     * select count(*) from table<br>
+     * select count(xx) from table<br>
+     * return -1 when the table is EMPTY!
+     * @param conn
+     * @param sql
+     * @param tbl
+     * @return
+     * @throws SQLException
+     */
+    public static final long count(Connection conn, String sql, TblBase<?> tbl/*,List<Object> params*/) throws SQLException {
+        // Connection conn = getConn();
+        System.out.println("▲ " + sql);
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.clearBatch();
+        ps.clearParameters();
+        ps.clearWarnings();
+        int index = 1;
+        for (Object param : tbl.getParams2()) {
+            ps.setObject(index++, param);
+        }
+        ResultSet rs = ps.executeQuery();
+        long result = -1; // return this when the table is EMPTY!
+        while (rs.next()) {
+            result = rs.getLong(1);
+            break;
+        }
+        rs.close();
+        ps.close();
+        return result;
+    }
+
     public static final <D> List<D> select(Class<D> dtoClass, Connection conn, String sql, TblBase<?> tbl/*,List<Object> params*/) throws SQLException {
         // Connection conn = getConn();
         System.out.println("▲ " + sql);
