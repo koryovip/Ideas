@@ -100,7 +100,7 @@ public abstract class TblBase<C> {
 
     abstract public List<C> columnAll();
 
-    public final String selectAllColumns() {
+    public final String getAllColumns() {
         StringBuilder sb = new StringBuilder("SELECT ");
         List<C> cols = columnAll();
         sb.append(((ColBase<?, ?>) cols.get(0)).name());
