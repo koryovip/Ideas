@@ -45,7 +45,7 @@ public class DB {
         return updateCount;
     }
 
-    public static final <D> List<D> select(Class<D> dtoClass, Connection conn, String sql, List<Object> params) throws SQLException {
+    public static final <D> List<D> select(Class<D> dtoClass, Connection conn, String sql, TblBase<?> tbl/*,List<Object> params*/) throws SQLException {
         // Connection conn = getConn();
         System.out.println("▲ " + sql);
         PreparedStatement ps = conn.prepareStatement(sql);
@@ -53,7 +53,7 @@ public class DB {
         ps.clearParameters();
         ps.clearWarnings();
         int index = 1;
-        for (Object param : params) {
+        for (Object param : tbl.getParams2()) {
             ps.setObject(index++, param);
         }
         ResultSet rs = ps.executeQuery();

@@ -12,6 +12,10 @@ public class T_USER extends TblBase<T_USER_COL<?>> {
         super("T_USER");
     }
 
+    final public static T_USER $() {
+        return new T_USER();
+    }
+
     private List<T_USER_COL<?>> columns = null;
 
     @Override

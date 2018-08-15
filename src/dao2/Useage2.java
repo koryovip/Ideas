@@ -28,7 +28,7 @@ public class Useage2 {
         // QueryRunner run = new QueryRunner();
         Connection conn = DB.getConn();
         {
-            T_USER user = new T_USER();
+            T_USER user = T_USER.$();
             USER_ID.set("user-001", user);
             SCORE.set(10, user);
             REG_DT.set(cal.getTime(), user);
@@ -36,7 +36,7 @@ public class Useage2 {
             System.out.println(insertCount);
         }
         {
-            T_USER user = new T_USER();
+            T_USER user = T_USER.$();
             USER_ID.set("user-002", user);
             SCORE.set(10, user);
             REG_DT.set(cal.getTime(), user);
@@ -45,7 +45,7 @@ public class Useage2 {
         }
         System.out.println("------------------------------------------------------------------------");
         {
-            T_USER user = new T_USER();
+            T_USER user = T_USER.$();
             // USER_ID.where(user, "user-001");
             SCORE.whereDesc(user, 10);
             SCORE.where$01(user, 101);
@@ -55,7 +55,7 @@ public class Useage2 {
             SCORE.where$1eq0(user, 105);
             USER_ID.desc(user);
             SCORE.asc(user);
-            List<T_USER_DTO> list = DB.select(T_USER_DTO.class, conn, user.selectAllColumns(), user.getParams2());
+            List<T_USER_DTO> list = DB.select(T_USER_DTO.class, conn, user.selectAllColumns(), user);
             for (T_USER_DTO ntt : list) {
                 System.out.println(ntt);
             }
@@ -66,14 +66,14 @@ public class Useage2 {
         }
         System.out.println("------------------------------------------------------------------------");
         {
-            T_USER user = new T_USER();
+            T_USER user = T_USER.$();
             // USER_ID.where(user, "user-001");
             SCORE.where(user, 10);
-            DB.select(T_USER_DTO.class, conn, user.selectCount(USER_ID), user.getParams2());
+            DB.select(T_USER_DTO.class, conn, user.selectCount(USER_ID), user);
         }
         System.out.println("------------------------------------------------------------------------");
         {
-            T_USER user = new T_USER();
+            T_USER user = T_USER.$();
             SCORE.set(0, user);
             REG_DT.set(new Date(), user);
             USER_ID.where(user, "user-001");
@@ -82,14 +82,14 @@ public class Useage2 {
         }
         System.out.println("------------------------------------------------------------------------");
         {
-            T_USER user = new T_USER();
+            T_USER user = T_USER.$();
             USER_ID.where(user, "user-001");
             // SCORE.where(user, BigDecimal.TEN);
-            DB.select(T_USER_DTO.class, conn, user.select(USER_ID, REG_DT), user.getParams2());
+            DB.select(T_USER_DTO.class, conn, user.select(USER_ID, REG_DT), user);
         }
         System.out.println("------------------------------------------------------------------------");
         {
-            T_USER user = new T_USER();
+            T_USER user = T_USER.$();
             USER_ID.where(user, "user-001");
             // REG_DT.where(user, new Date());
             int deleteCount = DB.delete(conn, user);
@@ -97,7 +97,7 @@ public class Useage2 {
         }
         System.out.println("------------------------------------------------------------------------");
         {
-            T_USER user = new T_USER();
+            T_USER user = T_USER.$();
             user.selectByPrimaryKey("dsdf", null);
             user.showParam();
         }
