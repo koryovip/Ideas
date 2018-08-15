@@ -1,20 +1,13 @@
 package dao2;
 
-import static dao2.def.M_COMPANY_COL.COMPANY_ID;
-import static dao2.def.M_COMPANY_COL.COMPANY_XXXX;
-import static dao2.def.T_USER_COL.REG_DT;
-import static dao2.def.T_USER_COL.SCORE;
-import static dao2.def.T_USER_COL.USER_ID;
+import static dao2.def.M_COMPANY_COL.*;
+import static dao2.def.T_USER_COL.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.ResultSetHandler;
-import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import dao2.def.M_COMPANY;
 import dao2.def.T_USER;
@@ -29,7 +22,7 @@ public class Useage2 {
         USER_ID.getType();
         REG_DT.getType();
 
-        QueryRunner run = new QueryRunner();
+        // QueryRunner run = new QueryRunner();
         Connection conn = DB.getConn();
         {
             T_USER user = new T_USER();
@@ -54,21 +47,21 @@ public class Useage2 {
             SCORE.whereDesc(user, 10);
             USER_ID.desc(user);
             SCORE.asc(user);
-            DB.select(conn, user.selectAllColumns(), user.getParams2());
-
-            ResultSetHandler<List<T_USER_DTO>> handler = new BeanListHandler<T_USER_DTO>(T_USER_DTO.class);
-
-            List<T_USER_DTO> list = run.query(conn, user.selectAllColumns(), handler, 10/*user.getParams2()*/);
+            List<T_USER_DTO> list = DB.select(T_USER_DTO.class, conn, user.selectAllColumns(), user.getParams2());
             for (T_USER_DTO ntt : list) {
                 System.out.println(ntt);
             }
+
+            // ResultSetHandler<List<T_USER_DTO>> handler = new BeanListHandler<T_USER_DTO>(T_USER_DTO.class);
+            // List<T_USER_DTO> list = run.query(conn, user.selectAllColumns(), handler, user.getParams2().toArray());
+
         }
         System.out.println("------------------------------------------------------------------------");
         {
             T_USER user = new T_USER();
             // USER_ID.where(user, "user-001");
             SCORE.where(user, 10);
-            DB.select(conn, user.selectCount(USER_ID), user.getParams2());
+            DB.select(T_USER_DTO.class, conn, user.selectCount(USER_ID), user.getParams2());
         }
         System.out.println("------------------------------------------------------------------------");
         {
@@ -84,7 +77,7 @@ public class Useage2 {
             T_USER user = new T_USER();
             USER_ID.where(user, "user-001");
             // SCORE.where(user, BigDecimal.TEN);
-            DB.select(conn, user.select(USER_ID, REG_DT), user.getParams2());
+            DB.select(T_USER_DTO.class, conn, user.select(USER_ID, REG_DT), user.getParams2());
         }
         System.out.println("------------------------------------------------------------------------");
         {

@@ -13,7 +13,7 @@ public class PADaoGenerator {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static void create(TblBase tbl) {
-        System.out.println(String.format("public final class %s_NTT {", tbl.name()));
+        System.out.println(String.format("public final class %s_DTO {", tbl.name()));
         System.out.println();
         List<ColBase> cols = tbl.columnAll();
         for (ColBase col : cols) {
@@ -32,6 +32,7 @@ public class PADaoGenerator {
             System.out.println(String.format("return this.%s;", var2));
             System.out.println("}");
         }
+        System.out.println();
         System.out.println("}");
     }
 

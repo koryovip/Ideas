@@ -1,40 +1,38 @@
 package dao2.def;
 
-import java.util.Date;
-
 public final class T_USER_DTO {
 
-    private String USER_ID;
-    private Integer score;
-    private Date regDt;
+    private java.lang.String userId;
+    private java.lang.Integer score;
+    private java.util.Date regDt;
 
-    public void setUserId(String userId) {
-        this.USER_ID = userId;
+    public void setUserId(java.lang.String userId) {
+        this.userId = userId;
     }
 
-    public String getUserId() {
-        return this.USER_ID;
+    public java.lang.String getUserId() {
+        return this.userId;
     }
 
-    public void setScore(Integer score) {
+    public void setScore(java.lang.Integer score) {
         this.score = score;
     }
 
-    public Integer getScore() {
+    public java.lang.Integer getScore() {
         return this.score;
     }
 
-    public void setRegDt(Date regDt) {
+    public void setRegDt(java.util.Date regDt) {
         this.regDt = regDt;
     }
 
-    public Date getRegDt() {
+    public java.util.Date getRegDt() {
         return this.regDt;
     }
 
     @Override
     public String toString() {
-        return "T_USER_NTT [userId=" + USER_ID + ", score=" + score + ", regDt=" + regDt + "]";
+        return "T_USER_DTO [userId=" + userId + ", score=" + score + ", regDt=" + regDt + "]";
     }
 
 }
