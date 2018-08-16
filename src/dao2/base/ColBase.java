@@ -14,12 +14,12 @@ public abstract class ColBase<T extends TblBase<?>, V> {
         this.name = name;
     }
 
-    public String name() {
+    final public String name() {
         return this.name;
     }
 
     @SuppressWarnings("unchecked")
-    public Class<T> getType() {
+    final public Class<T> getType() {
         ParameterizedType genericSuperclass = (ParameterizedType) getClass().getGenericSuperclass();
         Type[] actualTypeArguments = genericSuperclass.getActualTypeArguments();
         /*for (Type type : actualTypeArguments) {
@@ -33,11 +33,11 @@ public abstract class ColBase<T extends TblBase<?>, V> {
      * @param val
      * @param tbl
      */
-    public void set(V val, T tbl) {
+    final public void set(V val, T tbl) {
         tbl.set(this, val);
     }
 
-    public void where(T tbl, V val) {
+    final public void where(T tbl, V val) {
         tbl.where(this, val, SqlWhereCondition.$00);
     }
 
@@ -46,7 +46,7 @@ public abstract class ColBase<T extends TblBase<?>, V> {
      * @param tbl
      * @param val
      */
-    public void where$10(T tbl, V val) {
+    final public void where$10(T tbl, V val) {
         tbl.where(this, val, SqlWhereCondition.$10);
     }
 
@@ -55,7 +55,7 @@ public abstract class ColBase<T extends TblBase<?>, V> {
      * @param tbl
      * @param val
      */
-    public void where$01(T tbl, V val) {
+    final public void where$01(T tbl, V val) {
         tbl.where(this, val, SqlWhereCondition.$01);
     }
 
@@ -64,7 +64,7 @@ public abstract class ColBase<T extends TblBase<?>, V> {
      * @param tbl
      * @param val
      */
-    public void where$AB(T tbl, V val) {
+    final public void where$AB(T tbl, V val) {
         tbl.where(this, val, SqlWhereCondition.$AB);
     }
 
@@ -73,7 +73,7 @@ public abstract class ColBase<T extends TblBase<?>, V> {
      * @param tbl
      * @param val
      */
-    public void where$0eq1(T tbl, V val) {
+    final public void where$0eq1(T tbl, V val) {
         tbl.where(this, val, SqlWhereCondition.$0eq1);
     }
 
@@ -82,16 +82,16 @@ public abstract class ColBase<T extends TblBase<?>, V> {
      * @param tbl
      * @param val
      */
-    public void where$1eq0(T tbl, V val) {
+    final public void where$1eq0(T tbl, V val) {
         tbl.where(this, val, SqlWhereCondition.$1eq0);
     }
 
-    public void whereAsc(T tbl, V val) {
+    final public void whereAsc(T tbl, V val) {
         this.where(tbl, val);
         this.asc(tbl);
     }
 
-    public void whereDesc(T tbl, V val) {
+    final public void whereDesc(T tbl, V val) {
         this.where(tbl, val);
         this.desc(tbl);
     }
@@ -102,7 +102,7 @@ public abstract class ColBase<T extends TblBase<?>, V> {
      * @param val1
      * @param vals
      */
-    public void whereIn(T tbl, V val1, @SuppressWarnings("unchecked") V... vals) {
+    final public void whereIn(T tbl, V val1, @SuppressWarnings("unchecked") V... vals) {
         tbl.whereIn(this, val1, vals);
     }
 
@@ -113,15 +113,15 @@ public abstract class ColBase<T extends TblBase<?>, V> {
      * @param tbl
      * @param val
      */
-    public void whereLike(T tbl, V val) {
+    final public void whereLike(T tbl, V val) {
         tbl.where(this, val, SqlWhereCondition.like);
     }
 
-    public void asc(T tbl) {
+    final public void asc(T tbl) {
         tbl.orderBy(this, null, SqlOrder.ASC);
     }
 
-    public void desc(T tbl) {
+    final public void desc(T tbl) {
         tbl.orderBy(this, null, SqlOrder.DESC);
     }
 

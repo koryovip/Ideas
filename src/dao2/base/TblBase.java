@@ -17,30 +17,30 @@ public abstract class TblBase<C> {
         this.name = name;
     }
 
-    public String name() {
+    final public String name() {
         return this.name;
     }
 
     // final private Map<String, String> setCols = new LinkedHashMap<String, String>();
     final private Map<String, Object> setKV = new LinkedHashMap<String, Object>();
 
-    protected <T> T set(ColBase<?, ?> col, T val) {
+    final protected <T> T set(ColBase<?, ?> col, T val) {
         setKV.put(col.name(), val);
         return null;
     }
 
-    private List<String> whereCols = new ArrayList<String>();
-    private List<SqlWhereCondition> whereCond = new ArrayList<SqlWhereCondition>(); // 条件：=,<>,>=,<=
-    private List<Object> whereVals = new ArrayList<Object>();
+    final private List<String> whereCols = new ArrayList<String>();
+    final private List<SqlWhereCondition> whereCond = new ArrayList<SqlWhereCondition>(); // 条件：=,<>,>=,<=
+    final private List<Object> whereVals = new ArrayList<Object>();
 
-    protected <T> T where(ColBase<?, ?> col, T val, SqlWhereCondition cond) {
+    final protected <T> T where(ColBase<?, ?> col, T val, SqlWhereCondition cond) {
         whereCols.add(col.name());
         whereCond.add(cond);
         whereVals.add(val);
         return null;
     }
 
-    protected <T> T whereIn(ColBase<?, ?> col, T val, @SuppressWarnings("unchecked") T... vals) {
+    final protected <T> T whereIn(ColBase<?, ?> col, T val, @SuppressWarnings("unchecked") T... vals) {
         whereCond.add(SqlWhereCondition.in);
         whereCols.add(col.name() + " IN " + buildInStr(new StringBuilder(), vals.length + 1));
         whereVals.add(val);
@@ -56,7 +56,7 @@ public abstract class TblBase<C> {
      * @param size
      * @return
      */
-    private String buildInStr(StringBuilder sb, int size) {
+    final private String buildInStr(StringBuilder sb, int size) {
         sb.append("(?");
         for (int ii = 1; ii < size; ii++) {
             sb.append(", ?");
@@ -65,31 +65,31 @@ public abstract class TblBase<C> {
         return sb.toString();
     }
 
-    private List<String> orderCols = new ArrayList<String>();
-    private List<SqlOrder> orderDire = new ArrayList<SqlOrder>(); // ソート方向。asc or desc
+    final private List<String> orderCols = new ArrayList<String>();
+    final private List<SqlOrder> orderDire = new ArrayList<SqlOrder>(); // ソート方向。asc or desc
 
-    protected <T> T orderBy(ColBase<?, ?> col, T val, SqlOrder order) {
+    final protected <T> T orderBy(ColBase<?, ?> col, T val, SqlOrder order) {
         orderCols.add(col.name());
         orderDire.add(order);
         return null;
     }
 
-    public Object[] getParams1() {
+    final public Object[] getParams1() {
         return this.setKV.values().toArray();
     }
 
-    public List<Object> getParams2() {
+    final public List<Object> getParams2() {
         return this.whereVals;
     }
 
-    public List<Object> getParams3() {
+    final public List<Object> getParams3() {
         List<Object> result = new ArrayList<Object>();
         result.addAll(this.setKV.values());
         result.addAll(this.whereVals);
         return result;
     }
 
-    public void showParam() {
+    final public void showParam() {
         for (Object obj : setKV.values()) {
             System.out.println(obj);
         }
@@ -98,21 +98,21 @@ public abstract class TblBase<C> {
         }
     }
 
-    public final String selectCount() {
+    final public String selectCount() {
         return select("SELECT COUNT(*", ") FROM ", false, null);
     }
 
-    public final String selectCount(C col1) {
+    final public String selectCount(C col1) {
         return select("SELECT COUNT(", ") FROM ", true, col1);
     }
 
     @SafeVarargs
-    public final String select(C col1, C... col2) {
+    final public String select(C col1, C... col2) {
         return select("SELECT ", " FROM ", true, col1, col2);
     }
 
     @SafeVarargs
-    private final String select(final String SELECT, final String FROM, final boolean all, final C col1, final C... col2) {
+    final private String select(final String SELECT, final String FROM, final boolean all, final C col1, final C... col2) {
         StringBuilder sb = new StringBuilder(SELECT);
         if (all) {
             sb.append(((ColBase<?, ?>) col1).name());
@@ -127,7 +127,7 @@ public abstract class TblBase<C> {
 
     abstract public List<C> columnAll();
 
-    public final String selectColumnAll() {
+    final public String selectColumnAll() {
         StringBuilder sb = new StringBuilder("SELECT ");
         List<C> cols = columnAll();
         sb.append(((ColBase<?, ?>) cols.get(0)).name());
@@ -140,7 +140,7 @@ public abstract class TblBase<C> {
         return sb.toString();
     }
 
-    public final String insert() {
+    final public String insert() {
         StringBuilder sb = new StringBuilder("INSERT INTO ").append(this.name);
         this.buildKVStr(sb, this.setKV, " (", ", ", ")");
         sb.append(" VALUES ");
@@ -159,14 +159,14 @@ public abstract class TblBase<C> {
         return sb.toString();
     }
 
-    public final String update() {
+    final public String update() {
         StringBuilder sb = new StringBuilder("UPDATE ").append(this.name).append(" SET ");
         this.buildKVStr(sb, this.setKV, "", " = ?, ", " = ?");
         this.whereSql(sb);
         return sb.toString();
     }
 
-    public final String delete() {
+    final public String delete() {
         StringBuilder sb = new StringBuilder("DELETE FROM ").append(this.name);
         this.whereSql(sb);
         return sb.toString();

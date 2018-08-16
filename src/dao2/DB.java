@@ -15,6 +15,10 @@ import dao2.base.TblBase;
 
 public class DB {
 
+    private DB() {
+
+    }
+
     public static final int insert(Connection conn, TblBase<?> tbl) throws SQLException {
         return change(conn, tbl.insert(), tbl.getParams1());
     }
