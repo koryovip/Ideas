@@ -147,10 +147,10 @@ public class DB {
 
     private static final Field getField(Class<?> dtoClass, String columnName) {
         try {
-            return dtoClass.getDeclaredField(columnName);
+            return dtoClass.getDeclaredField(underlineToHump(columnName, true));
         } catch (NoSuchFieldException | SecurityException e1) {
             try {
-                return dtoClass.getDeclaredField(underlineToHump(columnName, true));
+                return dtoClass.getDeclaredField(columnName);
             } catch (NoSuchFieldException | SecurityException e2) {
                 // NoSuchField. is ok.
                 return null;
