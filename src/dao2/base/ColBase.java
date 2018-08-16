@@ -125,4 +125,11 @@ public abstract class ColBase<T extends TblBase<?>, V> {
         tbl.orderBy(this, null, SqlOrder.DESC);
     }
 
+    final public void isNull(T tbl) {
+        tbl.isNull(this, null);
+    }
+
+    final public void isNOTNull(T tbl) {
+        tbl.isNOTNull(this, null);
+    }
 }

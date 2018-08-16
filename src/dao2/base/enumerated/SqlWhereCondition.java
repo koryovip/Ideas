@@ -20,6 +20,8 @@ public enum SqlWhereCondition {
     , $1eq0(">=") //
     , in("IN") //
     , like("LIKE") //
+    , isnull("IS NULL") //
+    , isNOTnull("IS NOT NULL") //
     ;
 
     final private String value;

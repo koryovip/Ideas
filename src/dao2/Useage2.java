@@ -68,6 +68,7 @@ public class Useage2 {
             SCORE.where$1eq0(user, 105);
             USER_ID.desc(user);
             SCORE.asc(user);
+            REG_DT.isNull(user);
             List<T_USER_DTO> list = DB.select(T_USER_DTO.class, conn, user.selectColumnAll(), user);
             for (T_USER_DTO ntt : list) {
                 System.out.println(ntt);
@@ -82,6 +83,7 @@ public class Useage2 {
             T_USER user = T_USER.$();
             USER_ID.whereLike(user, "user-00%");
             SCORE.where(user, 10);
+            SCORE.isNOTNull(user);
             long count = DB.count(conn, user.selectCount(USER_ID), user);
             System.out.println(count);
         }

@@ -50,6 +50,18 @@ public abstract class TblBase<C> {
         return null;
     }
 
+    final protected <T> T isNull(ColBase<?, ?> col, T val) {
+        whereCond.add(SqlWhereCondition.isnull);
+        whereCols.add(col.name());
+        return null;
+    }
+
+    final protected <T> T isNOTNull(ColBase<?, ?> col, T val) {
+        whereCond.add(SqlWhereCondition.isNOTnull);
+        whereCols.add(col.name());
+        return null;
+    }
+
     /**
      * (?,?,?,?)みたいな文字列を作る。<br>
      * size > 0を保証して下さい。
@@ -178,10 +190,17 @@ public abstract class TblBase<C> {
         for (String whereCol : whereCols) {
             sb.append(" AND ").append(whereCol);
             final SqlWhereCondition condition = whereCond.get(index++);
-            if (condition != SqlWhereCondition.in) {
+            switch (condition) {
+            case in:
+                // 何もしない
+                break;
+            case isnull:
+            case isNOTnull:
+                sb.append(" ").append(condition.value());
+                break;
+            default:
                 sb.append(" ").append(condition.value()).append(" ?");
-            } else {
-
+                break;
             }
         }
     }
