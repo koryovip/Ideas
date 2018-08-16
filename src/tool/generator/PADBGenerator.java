@@ -6,6 +6,8 @@ import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +50,20 @@ public class PADBGenerator extends BaseGenerator {
         Template tblTempl = gt.getTemplate("/T_USER.java");
         Template colTempl = gt.getTemplate("/T_USER_COL.java");
         Template dtoTempl = gt.getTemplate("/T_USER_DTO.java");
+        {
+            String version = "1.0";
+            tblTempl.binding("version", version);
+            colTempl.binding("version", version);
+            dtoTempl.binding("version", version);
+        }
+        {
+            LocalDateTime time = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String timeStr = time.format(formatter);
+            tblTempl.binding("create_time", timeStr);
+            colTempl.binding("create_time", timeStr);
+            dtoTempl.binding("create_time", timeStr);
+        }
         final String dirBase = Prop.me().get("root.dir");
 
         this.execute9(dmd, schema, dirBase, tblTempl, colTempl, dtoTempl);
