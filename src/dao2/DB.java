@@ -77,13 +77,40 @@ public class DB {
         return result;
     }
 
-    public static final <D> List<D> select(Class<D> dtoClass, Connection conn, String sql, TblBase<?> tbl/*,List<Object> params*/) throws SQLException {
+    public static final <D> List<D> select(Class<D> dtoClass, Connection conn, String sql, TblBase<?> tbl) throws SQLException {
+        return select(dtoClass, conn, sql, tbl, -1, -1);
+    }
+
+    public static final <D> List<D> select(Class<D> dtoClass, Connection conn, String sql, TblBase<?> tbl, int limit1) throws SQLException {
+        return select(dtoClass, conn, sql, tbl, 0, limit1);
+    }
+
+    /**
+     * @param dtoClass
+     * @param conn
+     * @param sql
+     * @param tbl
+     * @param offset >= 0
+     * @param limit  >= 1, <=0 is unlimit
+     * @return
+     * @throws SQLException
+     */
+    public static final <D> List<D> select(Class<D> dtoClass, Connection conn, String sql, TblBase<?> tbl, int offset0, int limit1) throws SQLException {
         // Connection conn = getConn();
+        if (offset0 >= 0) {
+            sql += String.format(" OFFSET %d ROWS", offset0);
+        }
+        if (limit1 >= 1) {
+            sql += String.format(" FETCH NEXT %d ROWS ONLY", limit1);
+        }
         System.out.println("▲ " + sql);
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.clearBatch();
         ps.clearParameters();
         ps.clearWarnings();
+        if (limit1 >= 1) {
+            ps.setFetchSize(limit1);
+        }
         int index = 1;
         for (Object param : tbl.getParams2()) {
             ps.setObject(index++, param);
