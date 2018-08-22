@@ -44,8 +44,8 @@ public class DB {
         }
         int updateCount = ps.executeUpdate();
         ps.close();
-        conn.commit();
-        //conn.close();
+        // conn.commit();
+        // conn.close();
         return updateCount;
     }
 
