@@ -9,8 +9,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PAExceptionMessage {
     public String log();
-
-    public String jp();
-
-    public String en();
 }
