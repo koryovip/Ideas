@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.logging.log4j.util.StackLocatorUtil;
+
 import exception.base.ano.PAExceptionMessage;
 
 public abstract class PAException extends Throwable {
@@ -22,16 +24,16 @@ public abstract class PAException extends Throwable {
         this.message = message;
     }
 
-    protected <E> E build(Class<E> expCls, Object... params) {
+    protected <E extends PAException> E build(Class<E> expCls, Object... params) {
         Map<String, Method> methods = methodMap.get(expCls);
         if (methods == null) {
             Map<String, Method> list = new HashMap<String, Method>();
             for (Method m : expCls.getDeclaredMethods()) {
                 list.put(m.getName(), m);
             }
-            methodMap.put((Class<? extends PAException>) expCls, list);
+            methodMap.put(expCls, list);
         }
-        Method m = methodMap.get(expCls).get(Thread.currentThread().getStackTrace()[2].getMethodName());
+        Method m = methodMap.get(expCls).get(StackLocatorUtil.getStackTraceElement(2).getMethodName());
         if (m == null) {
             return null;
         }

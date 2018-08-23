@@ -25,7 +25,7 @@ public class BL001Exception extends PAException {
             , jp = ""//
             , en = "")
     final public BL001Exception $E_0001(String userId) {
-        return super.build(BL001Exception.class, userId);
+        return super.build(this.getClass(), userId);
     }
 
     @PAExceptionMessage(//
@@ -33,7 +33,7 @@ public class BL001Exception extends PAException {
             , jp = ""//
             , en = "")
     final public BL001Exception $I_0001(String userId) {
-        return super.build(BL001Exception.class, userId);
+        return super.build(this.getClass(), userId);
     }
 
 }
