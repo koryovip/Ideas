@@ -4,6 +4,7 @@
 	<classpathentry kind="src" path="src_3rd"/>
 	<classpathentry kind="lib" path="lib/log4j-api-2.11.1.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-core-2.11.1.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.47.jar"/>
 	<classpathentry kind="lib" path="lib/mssql-jdbc-6.4.0.jre8.jar"/>
 	<classpathentry kind="lib" path="lib/sqlite-jdbc-3.16.1.jar"/>
 	<classpathentry kind="lib" path="lib/beetl-2.8.6.jar"/>

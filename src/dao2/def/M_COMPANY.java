@@ -7,7 +7,7 @@ import dao2.base.TblBase;
 public class M_COMPANY extends TblBase<M_COMPANY_COL<?>> {
 
     public M_COMPANY() {
-        super("M_COMPANY");
+        super("M_COMPANY", null);
     }
 
     @Override

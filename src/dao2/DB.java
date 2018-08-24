@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dao2.base.TblBase;
+import dao2.base.enumerated.SqlSet;
 
 public class DB {
 
@@ -40,6 +41,10 @@ public class DB {
         ps.clearWarnings();
         int index = 1;
         for (Object param : params) {
+            if (SqlSet.now == param) {
+                System.out.println("Ignore:" + param);
+                continue;
+            }
             ps.setObject(index++, param);
         }
         int updateCount = ps.executeUpdate();

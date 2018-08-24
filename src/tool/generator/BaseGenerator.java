@@ -16,7 +16,38 @@ public abstract class BaseGenerator {
         return result.toString();
     }
 
+    /** MYSQL */
     public final Class<?> toJavaType(String columnType) {
+        System.out.println(columnType);
+        switch (columnType.toLowerCase()) {
+        case "char":
+        case "varchar":
+        case "nvarchar":
+            return String.class;
+        case "int":
+        case "int unsigned":
+            return Integer.class;
+        case "bigint":
+            return Long.class;
+        case "float":
+            return Double.class;
+        case "numeric":
+            return java.math.BigDecimal.class;
+        case "time":
+            return java.sql.Time.class;
+        case "date":
+            return java.sql.Date.class;
+        case "datetime":
+            return java.sql.Timestamp.class;
+        case "varbinary":
+        case "image":
+            return byte[].class;
+        default:
+            return Void.class;
+        }
+    }
+
+    public final Class<?> toJavaTypeMSSQL(String columnType) {
         switch (columnType) {
         case "char":
         case "varchar":

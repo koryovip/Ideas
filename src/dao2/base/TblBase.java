@@ -7,14 +7,17 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import dao2.base.enumerated.SqlOrder;
+import dao2.base.enumerated.SqlSet;
 import dao2.base.enumerated.SqlWhereCondition;
 
 public abstract class TblBase<C> {
 
     private final String name;
+    private final String fixedId;
 
-    public TblBase(String name) {
+    public TblBase(String name, String fixedId) {
         this.name = name;
+        this.fixedId = fixedId;
     }
 
     final public String name() {
@@ -154,9 +157,23 @@ public abstract class TblBase<C> {
 
     final public String insert() {
         StringBuilder sb = new StringBuilder("INSERT INTO ").append(this.name);
+        if (fixedId != null) {
+            this.setKV.put("reg_id", fixedId); // TODO 共通クラスで定義
+            this.setKV.put("reg_dt", SqlSet.now); // TODO 共通クラスで定義
+            this.setKV.put("upd_id", fixedId); // TODO 共通クラスで定義
+            this.setKV.put("upd_dt", SqlSet.now); // TODO 共通クラスで定義
+        }
         this.buildKVStr(sb, this.setKV, " (", ", ", ")");
-        sb.append(" VALUES ");
-        this.buildInStr(sb, setKV.size());
+        sb.append(" VALUES (");
+        // this.buildInStr(sb, setKV.size());
+        int index = 0;
+        for (Entry<String, Object> entry : this.setKV.entrySet()) {
+            if (index++ > 0) {
+                sb.append(",");
+            }
+            sb.append(SqlSet.now == entry.getValue() ? "now()" : "?"); // TODO 共通クラスで定義
+        }
+        sb.append(")");
         return sb.toString();
     }
 
@@ -173,7 +190,18 @@ public abstract class TblBase<C> {
 
     final public String update() {
         StringBuilder sb = new StringBuilder("UPDATE ").append(this.name).append(" SET ");
-        this.buildKVStr(sb, this.setKV, "", " = ?, ", " = ?");
+        if (fixedId != null) {
+            this.setKV.put("upd_id", fixedId); // TODO 共通クラスで定義
+            this.setKV.put("upd_dt", SqlSet.now); // TODO 共通クラスで定義
+        }
+        // this.buildKVStr(sb, this.setKV, "", " = ?, ", " = ?");
+        int index = 0;
+        for (Entry<String, Object> entry : this.setKV.entrySet()) {
+            if (index++ > 0) {
+                sb.append(",");
+            }
+            sb.append(entry.getKey()).append(SqlSet.now == entry.getValue() ? "=now()" : "=?"); // TODO 共通クラスで定義
+        }
         this.whereSql(sb);
         return sb.toString();
     }

@@ -9,7 +9,7 @@ import dao2.base.TblBase;
 public final class T_USER extends TblBase<T_USER_COL<?>> {
 
     public T_USER() {
-        super("T_USER");
+        super("T_USER", null);
     }
 
     public final static T_USER $() {
