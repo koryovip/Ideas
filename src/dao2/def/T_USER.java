@@ -9,11 +9,19 @@ import dao2.base.TblBase;
 public final class T_USER extends TblBase<T_USER_COL<?>> {
 
     public T_USER() {
-        super("T_USER", null);
+        this(null);
+    }
+
+    public T_USER(String fixedId) {
+        super("T_USER", fixedId);
     }
 
     public final static T_USER $() {
-        return new T_USER();
+        return new T_USER(null);
+    }
+
+    public final static T_USER $(String fixedId) {
+        return new T_USER(fixedId);
     }
 
     private List<T_USER_COL<?>> columns = null;

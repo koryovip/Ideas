@@ -13,11 +13,16 @@ import dao2.base.TblBase;
 public class ${TABLE_NAME} extends TblBase<${TABLE_NAME}_COL<?>> {
 
     public ${TABLE_NAME}() {
-        super("${TABLE_NAME}");
+        this(null);
     }
-
+    public ${TABLE_NAME}(String fixedId) {
+        super("${TABLE_NAME}", fixedId);
+    }
     public final static ${TABLE_NAME} $() {
-        return new ${TABLE_NAME}();
+        return new ${TABLE_NAME}(null);
+    }
+    public final static ${TABLE_NAME} $(String fixedId) {
+        return new ${TABLE_NAME}(fixedId);
     }
 
     private List<${TABLE_NAME}_COL<?>> columns = null;
